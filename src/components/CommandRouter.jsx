@@ -22,7 +22,7 @@ export default function CommandRouter(cmd) {
 - clear`;
 
     case "about":
-      return `Hey, I'm sk – an engineer focused on web/app development to solve real-world problems.`;
+      return `Hey, I'm Sree Soorya Kumar S C G – an engineer focused on web/app development to solve real-world problems.`;
 
     case "skills":
       return `Frontend: React, Tailwind\nBackend: Node.js, Express\nDatabase: MongoDB`;

@@ -10,40 +10,45 @@ export default function Desktop() {
   const [firefoxUrl, setFirefoxUrl] = useState("https://github.com/scgssk");
   const [firefoxMinimal, setFirefoxMinimal] = useState(false); // 🔥 New state
 
-useEffect(() => {
-  const handleNav = (e) => {
-    const detail = e.detail;
+  useEffect(() => {
+    const handleNav = (e) => {
+      const detail = e.detail;
 
-    if (typeof detail === "string") {
-      setFirefoxUrl(detail);
-      setFirefoxMinimal(true); // from terminal
-    } else if (typeof detail === "object" && detail !== null) {
-      setFirefoxUrl(detail.url || "https://github.com/scgssk");
-      setFirefoxMinimal(!!detail.minimal);
-    } else {
-      // fallback
-      setFirefoxMinimal(false);
-    }
+      if (typeof detail === "string") {
+        setFirefoxUrl(detail);
+        setFirefoxMinimal(true); // from terminal
+      } else if (typeof detail === "object" && detail !== null) {
+        setFirefoxUrl(detail.url || "https://github.com/scgssk");
+        setFirefoxMinimal(!!detail.minimal);
+      } else {
+        // fallback
+        setFirefoxMinimal(false);
+      }
 
-    openApp("firefox");
-  };
+      openApp("firefox");
+    };
 
-  const handleClose = () => {
-    closeApp("firefox");
-  };
+    const handleClose = () => {
+      closeApp("firefox");
+    };
 
-  window.addEventListener("open-in-firefox", handleNav);
-  window.addEventListener("close-firefox", handleClose);
+    window.addEventListener("open-in-firefox", handleNav);
+    window.addEventListener("close-firefox", handleClose);
 
-  return () => {
-    window.removeEventListener("open-in-firefox", handleNav);
-    window.removeEventListener("close-firefox", handleClose);
-  };
-}, []);
-
+    return () => {
+      window.removeEventListener("open-in-firefox", handleNav);
+      window.removeEventListener("close-firefox", handleClose);
+    };
+  }, []);
 
   const [apps, setApps] = useState([
-    { id: "terminal", title: "Terminal", visible: false, minimized: false, z: 1 },
+    {
+      id: "terminal",
+      title: "Terminal",
+      visible: false,
+      minimized: false,
+      z: 1,
+    },
     { id: "firefox", title: "Firefox", visible: false, minimized: false, z: 2 },
   ]);
 
@@ -58,7 +63,7 @@ useEffect(() => {
   const openApp = (id) => {
     if (id === "firefox") {
       setFirefoxUrl("https://github.com/scgssk"); // default view
-      setFirefoxMinimal(false);                   // desktop-style: show top bar
+      setFirefoxMinimal(false); // desktop-style: show top bar
     }
 
     setApps((prev) =>
@@ -114,7 +119,7 @@ useEffect(() => {
         onMinimize={minimizeApp}
         zIndex={app.z}
         onFocus={focusApp}
-         hideTopbar={app.id === "firefox" && firefoxMinimal}
+        hideTopbar={app.id === "firefox" && firefoxMinimal}
       >
         {content}
       </WindowWrapper>
@@ -154,6 +159,14 @@ useEffect(() => {
         >
           <img src="/firefox-icon.png" className="w-17 h-12" alt="Firefox" />
           <span className="text-xs mt-1 group-hover:underline">Firefox</span>
+        </button>
+
+        <button
+          onClick={() => window.open("/resume.pdf", "_blank")}
+          className="flex flex-col items-center text-green-300 hover:text-white group"
+        >
+          <img src="/resume-icon.png" className="w-12 h-12" alt="Resume" />
+          <span className="text-xs mt-1 group-hover:underline">Resume</span>
         </button>
       </div>
 
