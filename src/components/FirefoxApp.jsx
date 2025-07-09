@@ -5,9 +5,12 @@ import {
 } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
 import { FaBrain, FaRocket } from "react-icons/fa";
-import emailjs from '@emailjs/browser';
+import emailjs from "@emailjs/browser";
 
 export default function FirefoxApp() {
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const formRef = useRef();
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const sectionRefs = useRef([]);
 
@@ -15,35 +18,53 @@ export default function FirefoxApp() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-const handleSubmit = (e) => {
-  e.preventDefault();
+  const validateForm = () => {
+    const errors = {};
+    if (!form.name.trim()) errors.name = "Name is required";
+    if (!form.email.trim()) {
+      errors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(form.email)) {
+      errors.email = "Enter a valid email";
+    }
+    if (!form.message.trim()) errors.message = "Message is required";
+    return errors;
+  };
 
-  const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-  const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-  const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const errors = validateForm();
+    setFormErrors(errors);
 
-  emailjs
-    .send(
-      SERVICE_ID,
-      TEMPLATE_ID,
-      {
-        from_name: form.name,
-        from_email: form.email,
-        message: form.message,
-      },
-      PUBLIC_KEY
-    )
-    .then(() => {
+    if (Object.keys(errors).length > 0) return;
+
+    setIsSubmitting(true);
+
+    try {
+      const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+      await emailjs.send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        {
+          from_name: form.name,
+          from_email: form.email,
+          message: form.message,
+        },
+        PUBLIC_KEY
+      );
+
       alert("✅ Message sent successfully!");
       setForm({ name: "", email: "", message: "" });
-    })
-    .catch((error) => {
+      setFormErrors({});
+    } catch (error) {
       console.error("EmailJS error:", error);
       alert("❌ Failed to send message. Try again later.");
-    });
-};
-
-
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -101,7 +122,9 @@ const handleSubmit = (e) => {
           Full-stack Engineer | Creative Coder | Vision-driven Builder
         </p>
         <div className="text-center">
-          <button className="px-6 py-2 bg-green-500 text-black font-semibold rounded-full shadow-lg hover:scale-105 transition duration-300 animate-pulse">
+          <button 
+          onClick={() => window.open("https://linkedin.com/in/scgssk", "_blank")}
+          className="px-6 py-2 bg-green-500 text-black font-semibold rounded-full shadow-lg hover:scale-105 transition duration-300 animate-pulse">
             🚀 Hire Me
           </button>
         </div>
@@ -112,11 +135,15 @@ const handleSubmit = (e) => {
         "About Me",
         1,
         <p className="text-center max-w-2xl mx-auto">
-          Motivated and innovation-driven engineering student with hands-on experience in full-stack development using the MERN 
-stack. Skilled in building responsive web applications and solving real-world problems through intuitive UI/UX and scalable backend 
-systems. Proven ability to lead technical teams, mentor peers, and deliver production-ready solutions under tight deadlines. Actively 
-working on productivity tools, smart systems, and AI-powered applications. Ready to bring agility, accountability, and forward
-thinking development practices to your engineering team. 
+          Motivated and innovation-driven engineering student with hands-on
+          experience in full-stack development using the MERN stack. Skilled in
+          building responsive web applications and solving real-world problems
+          through intuitive UI/UX and scalable backend systems. Proven ability
+          to lead technical teams, mentor peers, and deliver production-ready
+          solutions under tight deadlines. Actively working on productivity
+          tools, smart systems, and AI-powered applications. Ready to bring
+          agility, accountability, and forward thinking development practices to
+          your engineering team.
         </p>
       )}
 
@@ -125,8 +152,13 @@ thinking development practices to your engineering team.
         "Skills",
         2,
         <ul className="list-disc list-inside max-w-2xl mx-auto space-y-1">
-          <li>Languages & Tools: Java, Python, JavaScript, HTML, CSS, Git, GitHub</li>
-          <li>Frameworks & Libraries: React, Node.js, Express.js, TailwindCSS, NumPy, Pandas</li>
+          <li>
+            Languages & Tools: Java, Python, JavaScript, HTML, CSS, Git, GitHub
+          </li>
+          <li>
+            Frameworks & Libraries: React, Node.js, Express.js, TailwindCSS,
+            NumPy, Pandas
+          </li>
           <li>Databases: MongoDB, SQL </li>
           <li>Dev Tools: Git, Docker, Vercel, Figma</li>
           <li>Other: Scrum, CCNA, Agile, YAML </li>
@@ -134,41 +166,53 @@ thinking development practices to your engineering team.
       )}
 
       {/* EXPERIENCE */}
-      {section("Experience", 3, (
+      {section(
+        "Experience",
+        3,
         <div className="text-white">
           <VerticalTimeline lineColor="#7bf1a8">
             <VerticalTimelineElement
-              
               icon={<FaBrain size={20} />}
               iconStyle={{ background: "#7bf1a8", color: "#000" }}
-              contentStyle={{ background: "#000", color: "#7bf1a8", border: "1px solid #7bf1a8" }}
+              contentStyle={{
+                background: "#000",
+                color: "#7bf1a8",
+                border: "1px solid #7bf1a8",
+              }}
               contentArrowStyle={{ borderRight: "7px solid #7bf1a8" }}
             >
               <h3 className="text-lg font-bold">IronMind – Lead Developer</h3>
               <p>
-                2025-Present<br/><br/>
-                Architected a productivity OS with smart reminders, AI-driven insights,
-                and lock-down focus systems.
+                2025-Present
+                <br />
+                <br />
+                Architected a productivity OS with smart reminders, AI-driven
+                insights, and lock-down focus systems.
               </p>
             </VerticalTimelineElement>
 
             <VerticalTimelineElement
-              
               icon={<FaRocket size={20} />}
               iconStyle={{ background: "#7bf1a8", color: "#000" }}
-              contentStyle={{ background: "#000", color: "#7bf1a8", border: "1px solid #7bf1a8" }}
+              contentStyle={{
+                background: "#000",
+                color: "#7bf1a8",
+                border: "1px solid #7bf1a8",
+              }}
               contentArrowStyle={{ borderRight: "7px solid #7bf1a8" }}
             >
               <h3 className="text-lg font-bold">WebLite – Founder & Dev</h3>
               <p>
-                2024<br/><br/>
+                2024
+                <br />
+                <br />
                 Designed a DSL-powered HTML/CSS playground with a compiler-like
                 experience for learning web dev faster.
               </p>
             </VerticalTimelineElement>
           </VerticalTimeline>
         </div>
-      ))}
+      )}
 
       {/* PROJECTS */}
       {section(
@@ -178,8 +222,10 @@ thinking development practices to your engineering team.
           {projectCard("IronMind", "https://github.com/scgssk/IronMind-Web")}
           {projectCard("WebLite", "https://github.com/scgssk/WebLite-DSL")}
           {projectCard("Sahayak AI", "https://github.com/scgssk/Sahayak-Ai")}
-          {projectCard("Multiplayer Quiz", "https://github.com/scgssk/QuizGame")}
-          
+          {projectCard(
+            "Multiplayer Quiz",
+            "https://github.com/scgssk/QuizGame"
+          )}
         </div>
       )}
 
@@ -233,32 +279,77 @@ thinking development practices to your engineering team.
             placeholder="Your Name"
             value={form.name}
             onChange={handleChange}
-            required
-            className="w-full px-4 py-2 bg-gray-800 border border-green-500 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
+            className={`w-full px-4 py-2 bg-gray-800 rounded focus:outline-none focus:ring-2 ${
+              formErrors.name
+                ? "border-red-500 focus:ring-red-400"
+                : "border-green-500 focus:ring-green-400"
+            }`}
           />
+          {formErrors.name && (
+            <p className="text-red-400 text-sm mt-1">{formErrors.name}</p>
+          )}
+
           <input
             type="email"
             name="email"
             placeholder="Your Email"
             value={form.email}
             onChange={handleChange}
-            required
-            className="w-full px-4 py-2 bg-gray-800 border border-green-500 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
+            className={`w-full px-4 py-2 bg-gray-800 rounded focus:outline-none focus:ring-2 ${
+              formErrors.email
+                ? "border-red-500 focus:ring-red-400"
+                : "border-green-500 focus:ring-green-400"
+            }`}
           />
+          {formErrors.email && (
+            <p className="text-red-400 text-sm mt-1">{formErrors.email}</p>
+          )}
+
           <textarea
             name="message"
             placeholder="Your Message"
             rows="4"
             value={form.message}
             onChange={handleChange}
-            required
-            className="w-full px-4 py-2 bg-gray-800 border border-green-500 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
+            className={`w-full px-4 py-2 bg-gray-800 rounded focus:outline-none focus:ring-2 ${
+              formErrors.message
+                ? "border-red-500 focus:ring-red-400"
+                : "border-green-500 focus:ring-green-400"
+            }`}
           />
+          {formErrors.message && (
+            <p className="text-red-400 text-sm mt-1">{formErrors.message}</p>
+          )}
+
           <button
             type="submit"
-            className="w-full px-6 py-2 bg-green-500 text-black font-semibold rounded-full shadow hover:scale-105 transition duration-300"
+            disabled={isSubmitting}
+            className="w-full px-6 py-2 bg-green-500 text-black font-semibold rounded-full shadow hover:scale-105 transition duration-300 flex items-center justify-center"
           >
-            Send Message ✉️
+            {isSubmitting ? (
+              <svg
+                className="animate-spin h-5 w-5 text-black"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                ></path>
+              </svg>
+            ) : (
+              "Send Message ✉️"
+            )}
           </button>
         </form>
       )}
