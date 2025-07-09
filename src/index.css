@@ -9,3 +9,70 @@
 .animate-fade-in {
   animation: fade-in 1s ease-in-out forwards;
 }
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.animate-blink {
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes glow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+.animate-glow {
+  animation: glow 1.2s ease-in-out infinite;
+}
+
+/* Optional matrix background animation */
+@keyframes matrixScroll {
+  0% { background-position-y: 0; }
+  100% { background-position-y: 100%; }
+}
+.animate-matrix {
+  animation: matrixScroll 15s linear infinite;
+}
+
+@keyframes blink {
+  0%, 50%, 100% {
+    opacity: 1;
+  }
+  25%, 75% {
+    opacity: 0;
+  }
+}
+
+@keyframes glow {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes matrix {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 1000px;
+  }
+}
+
+/* Optional utility classes for global use (mimic Tailwind) */
+.animate-blink {
+  animation: blink 1s step-start infinite;
+}
+
+.animate-glow {
+  animation: glow 0.8s ease-in-out both;
+}
+
+.animate-matrix {
+  animation: matrix 10s linear infinite;
+}

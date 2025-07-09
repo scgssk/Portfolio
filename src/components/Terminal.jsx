@@ -50,7 +50,7 @@ export default function Terminal() {
 };
 
   return (
-    <div className="bg-black text-sm md:text-base text-green-400 font-mono h-screen w-full p-4 overflow-y-auto relative">
+    <div className="bg-black text-sm md:text-base text-green-400 font-mono min-h-screen w-full p-4 overflow-y-auto relative">
 
       {/* ASCII Banner at the top */}
       <pre className="text-green-400 text-xs mb-4 whitespace-pre-wrap leading-snug">

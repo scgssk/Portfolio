@@ -1,14 +1,6 @@
 import Fuse from "fuse.js";
 
-const commands = [
-  "help",
-  "about",
-  "skills",
-  "projects",
-  "resume",
-  "gui",
-  "clear",
-];
+const commands = ["help", "about", "skills", "projects", "resume", "clear", "certificate"];
 
 const fuse = new Fuse(commands, {
   includeScore: true,
@@ -17,7 +9,6 @@ const fuse = new Fuse(commands, {
 
 export default function CommandRouter(cmd) {
   const input = cmd?.trim().toLowerCase();
-
   if (!input) return "";
 
   switch (input) {
@@ -26,17 +17,15 @@ export default function CommandRouter(cmd) {
 - about
 - skills
 - projects
+- certificate
 - resume
-- gui
 - clear`;
 
     case "about":
       return `Hey, I'm sk – an engineer focused on web/app development to solve real-world problems.`;
 
     case "skills":
-      return `Frontend: React, Tailwind
-Backend: Node.js, Express
-Database: MongoDB`;
+      return `Frontend: React, Tailwind\nBackend: Node.js, Express\nDatabase: MongoDB`;
 
     case "projects":
       return (
@@ -84,6 +73,11 @@ Database: MongoDB`;
         </div>
       );
 
+case "certificate":
+  window.open("https://drive.google.com/drive/folders/12wxQQv_VwwaFh0wGA06EJ5ZTtjq9Gc1U?usp=sharing", "_blank");
+  return `Opening certificates in new tab...`;
+
+
     case "resume":
       window.open("/resume.pdf", "_blank");
       return (
@@ -95,10 +89,6 @@ Database: MongoDB`;
           .
         </span>
       );
-
-    case "gui":
-      document.dispatchEvent(new Event("openGUI"));
-      return "Launching GUI interface...";
 
     case "clear":
       window.location.reload();
