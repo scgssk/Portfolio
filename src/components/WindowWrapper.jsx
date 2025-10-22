@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 
 export default function WindowWrapper({
@@ -15,13 +15,28 @@ export default function WindowWrapper({
   const [size, setSize] = useState({ width: 800, height: 460 });
   const [isMaximized, setIsMaximized] = useState(false);
   const draggingRef = useRef(null);
+  const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
+
+  useEffect(() => {
+    if (isMobile) {
+      setSize({
+        width: Math.max(window.innerWidth, 320),
+        height: Math.max(window.innerHeight, 500),
+      });
+      setPosition({ x: 0, y: 0 });
+      setIsMaximized(true);
+    }
+  }, []);
 
   const toggleMaximize = () => {
     if (isMaximized) {
       setSize({ width: 800, height: 460 });
       setPosition({ x: 100, y: 100 });
     } else {
-      setSize({ width: window.innerWidth, height: window.innerHeight });
+      setSize({
+        width: Math.max(window.innerWidth, 320),
+        height: Math.max(window.innerHeight, 500),
+      });
       setPosition({ x: 0, y: 0 });
     }
     setIsMaximized(!isMaximized);
@@ -32,7 +47,7 @@ export default function WindowWrapper({
       offsetX: e.clientX - position.x,
       offsetY: e.clientY - position.y,
     };
-    onFocus(appId); // bring to front
+    onFocus(appId);
   };
 
   const handleMouseMove = (e) => {
@@ -67,37 +82,33 @@ export default function WindowWrapper({
         ease: [0.22, 1, 0.36, 1],
       }}
     >
-      {/* Top bar */}
-      {/* Top bar */}
-{!hideTopbar && (
-  <div
-    onMouseDown={handleMouseDown}
-    onDoubleClick={toggleMaximize}
-    className="bg-gray-800 border-b border-green-500 px-4 py-1 flex items-center cursor-move select-none"
-  >
-    <span className="text-green-300 text-sm font-semibold">{title}</span>
+      {!hideTopbar && (
+        <div
+          onMouseDown={handleMouseDown}
+          onDoubleClick={toggleMaximize}
+          className="bg-gray-800 border-b border-green-500 px-4 py-1 flex items-center select-none"
+        >
+          <span className="text-green-300 text-sm font-semibold">{title}</span>
+          <div className="flex items-center gap-2 ml-auto">
+            <div
+              title="Minimize"
+              onClick={() => onMinimize(appId)}
+              className="w-3 h-3 bg-yellow-400 rounded-full cursor-pointer hover:ring-2 ring-yellow-300"
+            ></div>
+            <div
+              title="Maximize"
+              onClick={toggleMaximize}
+              className="w-3 h-3 bg-green-500 rounded-full cursor-pointer hover:ring-2 ring-green-400"
+            ></div>
+            <div
+              title="Close"
+              onClick={() => onClose(appId)}
+              className="w-3 h-3 bg-red-500 rounded-full cursor-pointer hover:ring-2 ring-red-400"
+            ></div>
+          </div>
+        </div>
+      )}
 
-    <div className="flex items-center gap-2 ml-auto">
-      <div
-        title="Minimize"
-        onClick={() => onMinimize(appId)}
-        className="w-3 h-3 bg-yellow-400 rounded-full cursor-pointer hover:ring-2 ring-yellow-300"
-      ></div>
-      <div
-        title="Maximize"
-        onClick={toggleMaximize}
-        className="w-3 h-3 bg-green-500 rounded-full cursor-pointer hover:ring-2 ring-green-400"
-      ></div>
-      <div
-        title="Close"
-        onClick={() => onClose(appId)}
-        className="w-3 h-3 bg-red-500 rounded-full cursor-pointer hover:ring-2 ring-red-400"
-      ></div>
-    </div>
-  </div>
-)}
-
-      {/* Window content */}
       <div className="w-full h-full overflow-auto">{children}</div>
     </motion.div>
   );
