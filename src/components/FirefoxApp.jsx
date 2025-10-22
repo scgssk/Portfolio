@@ -122,9 +122,12 @@ export default function FirefoxApp() {
           Full-stack Engineer | Creative Coder | Vision-driven Builder
         </p>
         <div className="text-center">
-          <button 
-          onClick={() => window.open("https://linkedin.com/in/scgssk", "_blank")}
-          className="px-6 py-2 bg-green-500 text-black font-semibold rounded-full shadow-lg hover:scale-105 transition duration-300 animate-pulse">
+          <button
+            onClick={() =>
+              window.open("https://linkedin.com/in/scgssk", "_blank")
+            }
+            className="px-6 py-2 bg-green-500 text-black font-semibold rounded-full shadow-lg hover:scale-105 transition duration-300 animate-pulse"
+          >
             🚀 Hire Me
           </button>
         </div>
@@ -134,16 +137,14 @@ export default function FirefoxApp() {
       {section(
         "About Me",
         1,
-        <p className="text-center max-w-2xl mx-auto">
-          Motivated and innovation-driven engineering student with hands-on
-          experience in full-stack development using the MERN stack. Skilled in
-          building responsive web applications and solving real-world problems
-          through intuitive UI/UX and scalable backend systems. Proven ability
-          to lead technical teams, mentor peers, and deliver production-ready
-          solutions under tight deadlines. Actively working on productivity
-          tools, smart systems, and AI-powered applications. Ready to bring
-          agility, accountability, and forward thinking development practices to
-          your engineering team.
+        <p className="text-justify max-w-2xl mx-auto">
+          Driven full-stack developer specialising in MERN (MongoDB, Express,
+          React, Node.js) for web and React Native for mobile. On a mission to
+          engineer practical solutions for everyday challenges — creator of the
+          open-source DSL “WebLite” that streamlines static website generation.
+          Eager to build astonishing, little-challenging projects that push the
+          envelope and delight users. Known for quick learning, innovation, and
+          delivering end-to-end digital experiences.
         </p>
       )}
 
@@ -172,6 +173,26 @@ export default function FirefoxApp() {
         <div className="text-white">
           <VerticalTimeline lineColor="#7bf1a8">
             <VerticalTimelineElement
+              icon={<FaRocket size={20} />}
+              iconStyle={{ background: "#7bf1a8", color: "#000" }}
+              contentStyle={{
+                background: "#000",
+                color: "#7bf1a8",
+                border: "1px solid #7bf1a8",
+              }}
+              contentArrowStyle={{ borderRight: "7px solid #7bf1a8" }}
+            >
+              <h3 className="text-lg font-bold">AI ML Intern</h3>
+              <p>
+                Infosys Springboard
+                <br />
+                <br />
+                Developed machine learning models for predictive analytics and
+                data classification using Python libraries like scikit-learn and
+                TensorFlow.
+              </p>
+            </VerticalTimelineElement>
+            <VerticalTimelineElement
               icon={<FaBrain size={20} />}
               iconStyle={{ background: "#7bf1a8", color: "#000" }}
               contentStyle={{
@@ -181,13 +202,14 @@ export default function FirefoxApp() {
               }}
               contentArrowStyle={{ borderRight: "7px solid #7bf1a8" }}
             >
-              <h3 className="text-lg font-bold">IronMind – Lead Developer</h3>
+              <h3 className="text-lg font-bold">Full Stack Developer</h3>
               <p>
-                2025-Present
+                QwickSoft Solutions Pvt Ltd
                 <br />
                 <br />
-                Architected a productivity OS with smart reminders, AI-driven
-                insights, and lock-down focus systems.
+                Developed a React Native app for freight management with
+                real-time API integration, backend connectivity, and a
+                responsive UI for efficient tracking and logistics.
               </p>
             </VerticalTimelineElement>
 
@@ -201,13 +223,16 @@ export default function FirefoxApp() {
               }}
               contentArrowStyle={{ borderRight: "7px solid #7bf1a8" }}
             >
-              <h3 className="text-lg font-bold">WebLite – Founder & Dev</h3>
+              <h3 className="text-lg font-bold">
+                Jr. Java Developer & Scrum Master
+              </h3>
               <p>
-                2024
+                BrainMint Chennai
                 <br />
                 <br />
-                Designed a DSL-powered HTML/CSS playground with a compiler-like
-                experience for learning web dev faster.
+                Built and optimized Java backend modules, supported agile
+                sprints, and improved team coordination in a fast-paced
+                environment.
               </p>
             </VerticalTimelineElement>
           </VerticalTimeline>
